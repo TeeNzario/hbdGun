@@ -1,7 +1,7 @@
 # The Forest Remembers
 
 An original, mobile-first interactive birthday story set in a rain-soaked
-moonlit forest. The experience includes five collectible memories, a changing
+moonlit forest. The experience includes eight collectible years, a changing
 forest, layered Web Audio ambience, a cinematic finale, and an optional vertical
 birthday video.
 
@@ -29,7 +29,7 @@ Change:
   `"center 30%"` or `"65% center"`.
 - The closing lines if desired.
 
-Replace the five photos without changing their filenames:
+Replace the eight photos without changing their filenames:
 
 ```text
 public/images/chapter-01.jpg
@@ -37,6 +37,9 @@ public/images/chapter-02.jpg
 public/images/chapter-03.jpg
 public/images/chapter-04.jpg
 public/images/chapter-05.jpg
+public/images/chapter-06.jpg
+public/images/chapter-07.jpg
+public/images/chapter-08.jpg
 ```
 
 Portrait photographs work best. Compress them to roughly 1200–1800 px on the

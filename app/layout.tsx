@@ -8,17 +8,17 @@ export const metadata: Metadata = {
   ),
   title: "The Forest Remembers | A Birthday Story",
   description:
-    "เรื่องราววันเกิดในป่าจันทร์สีเงิน—ห้าความทรงจำที่ค่อย ๆ นำแสงกลับคืนมา",
+    "เรื่องราววันเกิดในป่าจันทร์สีเงิน—แปดปีแห่งความทรงจำที่ค่อย ๆ นำแสงกลับคืนมา",
   openGraph: {
     title: "The Forest Remembers",
-    description: "A cinematic birthday story told through five glowing memories.",
+    description: "A cinematic birthday story told through eight years of glowing memories.",
     type: "website",
     images: [{ url: "/og.png", width: 1200, height: 630, alt: "The Forest Remembers — A Birthday Story" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "The Forest Remembers",
-    description: "A cinematic birthday story told through five glowing memories.",
+    description: "A cinematic birthday story told through eight years of glowing memories.",
     images: ["/og.png"],
   },
   icons: {

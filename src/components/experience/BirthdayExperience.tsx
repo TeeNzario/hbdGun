@@ -24,6 +24,8 @@ const PARTICLES = Array.from({ length: 22 }, (_, index) => ({
   delay: `${(index % 7) * 0.41}s`,
   duration: `${4.4 + (index % 5) * 0.8}s`,
 }));
+const TOTAL_CHAPTERS = birthdayStory.chapters.length;
+const PROGRESS_STORAGE_KEY = "birthday-forest-progress-v8";
 
 function useSoundscape() {
   const contextRef = useRef<AudioContext | null>(null);
@@ -150,7 +152,10 @@ function SoundToggle({
 
 function ProgressMoonstones({ count }: { count: number }) {
   return (
-    <div className="moonstone-progress" aria-label={`เก็บความทรงจำแล้ว ${count} จาก 5`}>
+    <div
+      className="moonstone-progress"
+      aria-label={`เก็บความทรงจำแล้ว ${count} จาก ${TOTAL_CHAPTERS}`}
+    >
       {birthdayStory.chapters.map((chapter, index) => (
         <span
           className={index < count ? "moonstone collected" : "moonstone"}
@@ -238,6 +243,9 @@ function Collectible({
         {index === 2 && <span className="crystal-shape" />}
         {index === 3 && <span className="page-shape">เรา</span>}
         {index === 4 && <span className="music-box-shape"><i /></span>}
+        {index === 5 && <span className="locket-shape"><i /></span>}
+        {index === 6 && <span className="moon-key-shape"><i /><b /></span>}
+        {index === 7 && <span className="hourglass-shape"><i /><b /></span>}
       </button>
       {index === 2 && <div className="wipe-fog" style={{ opacity: 1 - wipe / 100 }} />}
       <motion.p
@@ -301,7 +309,7 @@ function MemoryChapter({
       </motion.figure>
       <div className="memory-copy">
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.35 }}>
-          ความทรงจำที่ {String(chapter.id).padStart(2, "0")}
+          ปีที่ {String(chapter.id).padStart(2, "0")} · จาก {TOTAL_CHAPTERS} ปีของเรา
         </motion.p>
         <motion.h2
           id="memory-title"
@@ -351,7 +359,7 @@ export default function BirthdayExperience() {
   const audio = useSoundscape();
 
   const progress = collected.length;
-  const visualLevel = Math.min(progress, 5);
+  const visualLevel = Math.min(5, Math.round((progress / TOTAL_CHAPTERS) * 5));
   const forestStyle = useMemo(
     () =>
       ({
@@ -365,19 +373,23 @@ export default function BirthdayExperience() {
   );
 
   useEffect(() => {
-    const saved = sessionStorage.getItem("birthday-forest-progress");
+    const saved = sessionStorage.getItem(PROGRESS_STORAGE_KEY);
     if (!saved) return;
     try {
       const parsed = JSON.parse(saved) as { collected: number[] };
-      setCollected(parsed.collected.filter((value) => value >= 0 && value < 5));
+      setCollected(
+        parsed.collected.filter((value) => value >= 0 && value < TOTAL_CHAPTERS),
+      );
     } catch {
-      sessionStorage.removeItem("birthday-forest-progress");
+      sessionStorage.removeItem(PROGRESS_STORAGE_KEY);
     }
   }, []);
 
   useEffect(() => {
-    sessionStorage.setItem("birthday-forest-progress", JSON.stringify({ collected }));
-    audio.setRainLevel(Math.max(0.02, 0.48 - collected.length * 0.085));
+    sessionStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify({ collected }));
+    audio.setRainLevel(
+      Math.max(0.02, 0.48 * (1 - collected.length / TOTAL_CHAPTERS)),
+    );
   }, [audio.setRainLevel, collected]);
 
   const begin = async () => {
@@ -401,7 +413,7 @@ export default function BirthdayExperience() {
     const next = Array.from(new Set([...collected, activeMemory]));
     setCollected(next);
     audio.playChime([523.25, 698.46, 880]);
-    if (next.length === 5) {
+    if (next.length === TOTAL_CHAPTERS) {
       setScene("finale");
       audio.setRainLevel(0);
     } else {
@@ -415,7 +427,7 @@ export default function BirthdayExperience() {
     setScene("opening");
     setIntroLine(false);
     setVideoError(false);
-    sessionStorage.removeItem("birthday-forest-progress");
+    sessionStorage.removeItem(PROGRESS_STORAGE_KEY);
   };
 
   const onForestPointerMove = (event: ReactPointerEvent<HTMLElement>) => {
@@ -514,9 +526,9 @@ export default function BirthdayExperience() {
             </AnimatePresence>
             <p className="location-label">
               <span>{String(progress + 1).padStart(2, "0")}</span>
-              เส้นทางแห่งความทรงจำ
+              เส้นทางปีที่ {Math.min(progress + 1, TOTAL_CHAPTERS)}
             </p>
-            {progress < 5 && (
+            {progress < TOTAL_CHAPTERS && (
               <Collectible index={progress} onCollect={collectObject} playChime={audio.playChime} />
             )}
             <motion.p
