@@ -1075,6 +1075,75 @@ button {
   background: rgba(3, 16, 17, .52);
 }
 
+.closing-scene > :not(.closing-fireworks) {
+  position: relative;
+  z-index: 2;
+}
+
+.closing-fireworks {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.firework-burst {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  color: #d8e3e2;
+  background: currentColor;
+  box-shadow:
+    0 -54px 0 -1px currentColor,
+    38px -38px 0 -1px currentColor,
+    54px 0 0 -1px currentColor,
+    38px 38px 0 -1px currentColor,
+    0 54px 0 -1px currentColor,
+    -38px 38px 0 -1px currentColor,
+    -54px 0 0 -1px currentColor,
+    -38px -38px 0 -1px currentColor,
+    18px -48px 0 -2px currentColor,
+    48px -18px 0 -2px currentColor,
+    48px 18px 0 -2px currentColor,
+    18px 48px 0 -2px currentColor,
+    -18px 48px 0 -2px currentColor,
+    -48px 18px 0 -2px currentColor,
+    -48px -18px 0 -2px currentColor,
+    -18px -48px 0 -2px currentColor;
+  opacity: 0;
+  transform: scale(.12);
+  animation: firework-bloom 3.8s cubic-bezier(.15,.65,.2,1) infinite;
+}
+
+.burst-1 {
+  left: 19%;
+  top: 25%;
+  color: #d8e3e2;
+}
+
+.burst-2 {
+  right: 18%;
+  top: 18%;
+  color: #b9d7cf;
+  animation-delay: 1.15s;
+}
+
+.burst-3 {
+  left: 31%;
+  bottom: 21%;
+  color: #e6edcf;
+  animation-delay: 2.15s;
+}
+
+.burst-4 {
+  right: 24%;
+  bottom: 29%;
+  color: #9ebfbd;
+  animation-delay: 2.85s;
+}
+
 .closing-scene p {
   max-width: 500px;
   margin: 4px 0;
@@ -1127,6 +1196,12 @@ button {
 @keyframes moon-brighten { from { transform: translateX(-50%) scale(.82); } to { transform: translateX(-50%) scale(1.08); } }
 @keyframes heart-pulse { 50% { transform: scale(1.8); opacity: .45; } }
 @keyframes landed { 50% { transform: translateY(-3px); opacity: .55; } }
+@keyframes firework-bloom {
+  0%, 7% { opacity: 0; transform: scale(.12); }
+  18% { opacity: .88; }
+  58% { opacity: .36; transform: scale(1); }
+  72%, 100% { opacity: 0; transform: scale(1.14) translateY(8px); }
+}
 
 @media (min-width: 760px) {
   .memory-overlay {
@@ -1177,5 +1252,9 @@ button {
     animation-duration: .01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: .01ms !important;
+  }
+  .firework-burst {
+    opacity: .35;
+    transform: scale(.82);
   }
 }

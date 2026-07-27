@@ -421,15 +421,6 @@ export default function BirthdayExperience() {
     }
   };
 
-  const reset = () => {
-    setCollected([]);
-    setActiveMemory(0);
-    setScene("opening");
-    setIntroLine(false);
-    setVideoError(false);
-    sessionStorage.removeItem(PROGRESS_STORAGE_KEY);
-  };
-
   const onForestPointerMove = (event: ReactPointerEvent<HTMLElement>) => {
     if (dragStart.current === null) return;
     const delta = event.clientX - dragStart.current;
@@ -585,7 +576,7 @@ export default function BirthdayExperience() {
             <button className="close-button video-close" onClick={() => setScene("finale")} aria-label="ปิดวิดีโอ">×</button>
             <div className="video-heading">
               <span>A final memory</span>
-              <p>กดเล่นเมื่อเธอพร้อม</p>
+              <p>กดเล่นเมื่อกัญพร้อม</p>
             </div>
             <div className="video-frame">
               {!videoError ? (
@@ -614,6 +605,11 @@ export default function BirthdayExperience() {
 
         {scene === "closing" && (
           <motion.section className="closing-scene" key="closing" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            <div className="closing-fireworks" aria-hidden="true">
+              {Array.from({ length: 4 }, (_, index) => (
+                <span className={`firework-burst burst-${index + 1}`} key={index} />
+              ))}
+            </div>
             <span className="opening-mark" aria-hidden="true">✦</span>
             {birthdayStory.closing.map((line, index) => (
               <motion.p key={line} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .5 + index * .9 }}>
@@ -621,9 +617,7 @@ export default function BirthdayExperience() {
               </motion.p>
             ))}
             <motion.div className="closing-actions" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.5 }}>
-              <button onClick={() => { setVideoError(false); setScene("video"); }}>ดูอีกครั้ง</button>
-              <button onClick={() => { setActiveMemory(0); setScene("memory"); }}>กลับไปดูความทรงจำ</button>
-              <button onClick={reset}>เริ่มเรื่องราวใหม่</button>
+              <button onClick={() => { setVideoError(false); setScene("video"); }}>ดูวิดีโออีกครั้ง</button>
             </motion.div>
           </motion.section>
         )}
@@ -631,7 +625,9 @@ export default function BirthdayExperience() {
 
       {scene !== "opening" && (
         <>
-          <SoundToggle muted={audio.muted} onToggle={() => audio.setMuted((value) => !value)} />
+          {scene !== "closing" && (
+            <SoundToggle muted={audio.muted} onToggle={() => audio.setMuted((value) => !value)} />
+          )}
           {scene !== "video" && scene !== "closing" && <ProgressMoonstones count={progress} />}
         </>
       )}
