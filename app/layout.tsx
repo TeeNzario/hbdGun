@@ -2,6 +2,10 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ??
+      "https://the-forest-remembers-birthday.info-teen1301.chatgpt.site",
+  ),
   title: "The Forest Remembers | A Birthday Story",
   description:
     "เรื่องราววันเกิดในป่าจันทร์สีเงิน—ห้าความทรงจำที่ค่อย ๆ นำแสงกลับคืนมา",

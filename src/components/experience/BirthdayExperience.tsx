@@ -108,6 +108,9 @@ function useSoundscape() {
   useEffect(() => {
     const saved = sessionStorage.getItem("birthday-forest-muted") === "true";
     setMuted(saved);
+  }, []);
+
+  useEffect(() => {
     const onVisibility = () => {
       const ctx = contextRef.current;
       if (!ctx) return;
