@@ -25,7 +25,9 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
+      # npm install is used here because the starter lockfile is generated across
+      # macOS and Linux, whose optional dependency graphs can differ.
+      - run: npm install --no-audit --no-fund
       - run: npm run build:github
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
